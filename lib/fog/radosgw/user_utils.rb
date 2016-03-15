@@ -8,7 +8,14 @@ module Fog
             :method => 'POST',
             :path => path,
         }
-        query        = "?uid=#{user_id}&format=json&suspended=#{user[:suspended]}"
+
+        # TODO: Use Excon's query building string.
+        query_params = user.
+          merge({uid: user_id, format: :json}).
+          map{|k,v| "#{k}=#{v}"}.
+          join("&")
+
+        query        = "?#{query_params}"
         begin
           response = Excon.post("#{@scheme}://#{@host}/#{path}#{query}",
                                 :headers => signed_headers(params))

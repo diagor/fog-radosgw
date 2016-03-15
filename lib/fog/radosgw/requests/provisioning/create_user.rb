@@ -4,7 +4,7 @@ module Fog
       class Real
         include Utils
 
-        def create_user(user_id, display_name, email, options = {})
+        def create_user(user_id, display_name, email, caps, options = {})
           if get_user(user_id).status != 404
             raise Fog::Radosgw::Provisioning::UserAlreadyExists, "User with user_id #{user_id} already exists."
           end
@@ -13,7 +13,8 @@ module Fog
           user_id      = escape(user_id)
           display_name = escape(display_name)
           email        = escape(email)
-          query        = "?uid=#{user_id}&display-name=#{display_name}&email=#{email}&format=json"
+          caps         = escape(caps)
+          query        = "?uid=#{user_id}&display-name=#{display_name}&email=#{email}&user-caps=#{caps}&format=json"
           params       = {
             :method => 'PUT',
             :path => path,
@@ -44,7 +45,7 @@ module Fog
           end
         end
 
-        def create_user(user_id, display_name, email, options = {})
+        def create_user(user_id, display_name, email, caps, options = {})
           if user_exists?(user_id)
             raise Fog::Radosgw::Provisioning::UserAlreadyExists, "User with user_id #{user_id} already exists."
           end
@@ -56,6 +57,7 @@ module Fog
             :display_name => display_name,
             :suspended    => 0, 
             :secret_key   => secret_key,
+            :user_caps    => caps,
           }
 
           Excon::Response.new.tap do |response|
@@ -74,6 +76,7 @@ module Fog
                  "user"       => user_id,
                }
               ],
+              "user_caps"     => caps
             }
           end
         end
