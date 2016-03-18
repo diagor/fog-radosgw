@@ -14,7 +14,7 @@ module Fog
           display_name = escape(display_name)
           email        = escape(email)
           caps         = escape(caps)
-          query        = "?uid=#{user_id}&display-name=#{display_name}&email=#{email}&user-caps=#{caps}&format=json"
+          query        = "?uid=#{user_id}&display-name=#{display_name}&email=#{email}&caps=#{caps}&format=json"
           params       = {
             :method => 'PUT',
             :path => path,
