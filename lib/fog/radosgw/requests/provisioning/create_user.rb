@@ -76,7 +76,7 @@ module Fog
                  "user"       => user_id,
                }
               ],
-              "user_caps"     => caps
+              "caps"     => caps
             }
           end
         end
